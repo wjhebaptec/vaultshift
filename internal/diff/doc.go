@@ -1,6 +1,4 @@
-// Package diff provides utilities for comparing secrets across providers.
-//
-// Use Compare to produce a DiffResult describing which secrets were added,
-// removed, updated, or unchanged between two snapshots. Use HasDrift to
-// quickly determine whether any discrepancy exists.
+// Package diff provides utilities for comparing secret states
+// across providers, identifying added, removed, updated, and
+// unchanged keys to detect configuration drift.
 package diff
