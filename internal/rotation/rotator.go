@@ -25,12 +25,12 @@ func New(registry *provider.Registry, cfg *config.Config) *Rotator {
 
 // RotateResult contains the result of a rotation operation
 type RotateResult struct {
-	SecretKey    string
-	SourceName   string
-	TargetName   string
-	Success      bool
-	Error        error
-	RotatedAt    time.Time
+	SecretKey  string
+	SourceName string
+	TargetName string
+	Success    bool
+	Error      error
+	RotatedAt  time.Time
 }
 
 // Rotate performs secret rotation from source to targets
@@ -93,4 +93,16 @@ func (r *Rotator) RotateAll(ctx context.Context) ([]RotateResult, error) {
 	}
 
 	return allResults, nil
+}
+
+// HasFailures returns true if any result in the slice represents a failed rotation.
+// This is useful for callers that need to check overall success without iterating
+// results manually.
+func HasFailures(results []RotateResult) bool {
+	for _, r := range results {
+		if !r.Success {
+			return true
+		}
+	}
+	return false
 }
