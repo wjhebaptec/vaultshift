@@ -62,6 +62,17 @@ func TestLoadDir_ReturnsAllTmplFiles(t *testing.T) {
 	}
 }
 
+func TestLoadDir_EmptyDir(t *testing.T) {
+	l := template.NewLoader(t.TempDir())
+	templates, err := l.LoadDir()
+	if err != nil {
+		t.Fatalf("unexpected error for empty directory: %v", err)
+	}
+	if len(templates) != 0 {
+		t.Errorf("expected 0 templates, got %d", len(templates))
+	}
+}
+
 func TestLoadDir_MissingDir(t *testing.T) {
 	l := template.NewLoader("/nonexistent/path")
 	_, err := l.LoadDir()
