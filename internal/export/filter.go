@@ -24,6 +24,13 @@ func WithExcludeFilter(substrings ...string) KeyFilter {
 	}
 }
 
+// WithSuffixFilter returns a KeyFilter that includes only keys with the given suffix.
+func WithSuffixFilter(suffix string) KeyFilter {
+	return func(key string) bool {
+		return strings.HasSuffix(key, suffix)
+	}
+}
+
 // ChainFilters combines multiple KeyFilters with AND logic.
 func ChainFilters(filters ...KeyFilter) KeyFilter {
 	return func(key string) bool {
