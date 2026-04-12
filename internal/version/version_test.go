@@ -87,3 +87,18 @@ func TestNewHistory_DefaultMaxSize(t *testing.T) {
 		t.Errorf("expected default max 10, got %d", h.Len())
 	}
 }
+
+func TestHistory_AllReturnsSnapshot(t *testing.T) {
+	// Verify that modifying the slice returned by All does not affect the history.
+	h := NewHistory(5)
+	h.Push("a", "")
+	h.Push("b", "")
+
+	all := h.All()
+	all[0].Value = "mutated"
+
+	all2 := h.All()
+	if all2[0].Value == "mutated" {
+		t.Error("All() should return a snapshot; mutating it should not affect history")
+	}
+}
