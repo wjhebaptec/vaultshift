@@ -53,6 +53,22 @@ func TestPrintJSON_ValidJSON(t *testing.T) {
 	}
 }
 
+func TestPrintJSON_EmptyCollector(t *testing.T) {
+	c := metrics.New()
+	var buf bytes.Buffer
+	r := metrics.NewReporter(c, &buf)
+	if err := r.PrintJSON(); err != nil {
+		t.Fatalf("PrintJSON error on empty collector: %v", err)
+	}
+	var entries []metrics.Entry
+	if err := json.Unmarshal(buf.Bytes(), &entries); err != nil {
+		t.Fatalf("invalid JSON for empty collector: %v", err)
+	}
+	if len(entries) != 0 {
+		t.Errorf("expected empty entries, got: %+v", entries)
+	}
+}
+
 func TestNewReporter_DefaultsToStdout(t *testing.T) {
 	// Just ensure no panic when out is nil.
 	c := metrics.New()
