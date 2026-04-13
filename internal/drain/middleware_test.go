@@ -69,6 +69,17 @@ func TestWrapGet_FailsWhenDrained(t *testing.T) {
 	}
 }
 
+func TestWrapPut_FailsWhenDrained(t *testing.T) {
+	w, d := newWrapped(t)
+	// drain without any in-flight ops
+	go func() { _ = d.Drain(context.Background()) }()
+	time.Sleep(20 * time.Millisecond)
+	err := w.PutSecret(context.Background(), "k", "v")
+	if err == nil {
+		t.Fatal("expected error after drain, got nil")
+	}
+}
+
 func TestWrapName_ReturnsInnerName(t *testing.T) {
 	w, _ := newWrapped(t)
 	if w.Name() != "test" {
