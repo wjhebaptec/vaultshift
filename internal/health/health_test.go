@@ -94,3 +94,15 @@ func TestCheckAll_LatencyRecorded(t *testing.T) {
 		t.Error("CheckedAt should be set")
 	}
 }
+
+// TestRegister_DuplicateName verifies that registering two checkers with the
+// same name returns an error on the second registration.
+func TestRegister_DuplicateName(t *testing.T) {
+	mon := health.New()
+	if err := mon.Register(&mockChecker{name: "aws"}); err != nil {
+		t.Fatalf("unexpected error on first register: %v", err)
+	}
+	if err := mon.Register(&mockChecker{name: "aws"}); err == nil {
+		t.Fatal("expected error when registering duplicate provider name")
+	}
+}
