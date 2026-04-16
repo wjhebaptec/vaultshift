@@ -34,6 +34,14 @@ func TestAdd_EmptyKey_ReturnsError(t *testing.T) {
 	}
 }
 
+func TestAdd_Duplicate_ReturnsError(t *testing.T) {
+	idx := index.New()
+	_ = idx.Add("aws", "prod/db/password")
+	if err := idx.Add("aws", "prod/db/password"); err == nil {
+		t.Fatal("expected error for duplicate entry")
+	}
+}
+
 func TestSearchPrefix_MatchesCorrectEntries(t *testing.T) {
 	idx := index.New()
 	_ = idx.Add("aws", "prod/db/password")
