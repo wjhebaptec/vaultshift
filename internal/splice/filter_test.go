@@ -26,6 +26,13 @@ func TestWithSourceSuffix_Matches(t *testing.T) {
 	}
 }
 
+func TestWithSourceSuffix_ExactMatch(t *testing.T) {
+	f := splice.WithSourceSuffix("key")
+	if !f("src", "key") {
+		t.Error("expected exact suffix match when source equals suffix")
+	}
+}
+
 func TestWithProviderName_Filters(t *testing.T) {
 	f := splice.WithProviderName("aws")
 	if !f("aws", "key") {
