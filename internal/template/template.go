@@ -58,3 +58,17 @@ func (r *Renderer) RenderAll(templates map[string]string, data map[string]string
 	}
 	return results, nil
 }
+
+// AddFunc registers a custom function under the given name, making it available
+// for use in templates rendered by this Renderer. It returns an error if the
+// name is empty or the function is nil.
+func (r *Renderer) AddFunc(name string, fn interface{}) error {
+	if name == "" {
+		return fmt.Errorf("template func name must not be empty")
+	}
+	if fn == nil {
+		return fmt.Errorf("template func %q must not be nil", name)
+	}
+	r.funcs[name] = fn
+	return nil
+}
