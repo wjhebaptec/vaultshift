@@ -93,3 +93,11 @@ func (t *Throttler) Reset(key string) {
 	defer t.mu.Unlock()
 	delete(t.tokens, key)
 }
+
+// ResetAll clears all recorded timestamps for every key, effectively
+// restoring the Throttler to a clean state.
+func (t *Throttler) ResetAll() {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	t.tokens = make(map[string][]time.Time)
+}
