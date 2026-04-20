@@ -18,4 +18,12 @@
 //
 // Each Result in the returned slice corresponds positionally to the input
 // Item slice, making it straightforward to correlate successes and failures.
+//
+// Error handling:
+//
+// Errors returned by ProcessFunc are captured in the corresponding Result and
+// do not halt processing of other items. Callers should inspect each Result's
+// Err field after Run returns. If the provided context is cancelled, in-flight
+// items will still complete, but pending chunks will be skipped and their
+// Results will carry ctx.Err().
 package batch
