@@ -2,6 +2,7 @@ package label
 
 // Filter returns the subset of secret keys (from the provided slice) whose
 // labels match all entries in selector, scoped to the given provider.
+// If selector is empty, all keys are returned.
 func (m *Manager) Filter(provider string, keys []string, selector Labels) []string {
 	var matched []string
 	for _, k := range keys {
@@ -25,4 +26,12 @@ func (m *Manager) ListLabelled(provider string) []string {
 		}
 	}
 	return keys
+}
+
+// FilterLabelled returns all secret keys under the given provider that have at
+// least one label set and whose labels match all entries in selector.
+// It is a convenience combination of ListLabelled and Filter.
+func (m *Manager) FilterLabelled(provider string, selector Labels) []string {
+	keys := m.ListLabelled(provider)
+	return m.Filter(provider, keys, selector)
 }
