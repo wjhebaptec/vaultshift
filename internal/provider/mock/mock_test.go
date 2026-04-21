@@ -85,3 +85,13 @@ func TestMockProvider_ClosedOperations(t *testing.T) {
 		t.Error("expected error on closed provider")
 	}
 }
+
+func TestMockProvider_DeleteNonExistent(t *testing.T) {
+	p := New(provider.TypeAWS)
+	ctx := context.Background()
+
+	err := p.DeleteSecret(ctx, "does-not-exist")
+	if err == nil {
+		t.Error("expected error when deleting non-existent secret")
+	}
+}
